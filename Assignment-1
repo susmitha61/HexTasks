@@ -1,12 +1,9 @@
 Task 1: Database Design
-
-Create the database named "TechShop"
-
-
+----------
 CREATE DATABASE TechShop;
-Define the schema for the Customers, Products, Orders, OrderDetails, and Inventory tables
-
-
+----------
+USE TechShop;
+----------
 CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY,
     FirstName VARCHAR(50),
@@ -15,14 +12,14 @@ CREATE TABLE Customers (
     Phone VARCHAR(15),
     Address VARCHAR(255)
 );
-
+----------
 CREATE TABLE Products (
     ProductID INT PRIMARY KEY,
     ProductName VARCHAR(100),
     Description TEXT,
     Price DECIMAL(10, 2)
 );
-
+----------
 CREATE TABLE Orders (
     OrderID INT PRIMARY KEY,
     CustomerID INT,
@@ -31,6 +28,7 @@ CREATE TABLE Orders (
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 
+----------
 CREATE TABLE OrderDetails (
     OrderDetailID INT PRIMARY KEY,
     OrderID INT,
@@ -39,7 +37,7 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
-
+----------
 CREATE TABLE Inventory (
     InventoryID INT PRIMARY KEY,
     ProductID INT,
@@ -47,6 +45,8 @@ CREATE TABLE Inventory (
     LastStockUpdate DATETIME,
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
+----------
+a. Customers
 INSERT INTO Customers (CustomerID, FirstName, LastName, Email, Phone, Address) VALUES
 (1, 'John', 'Doe', 'john@example.com', '1234567890', '123 Elm St'),
 (2, 'Jane', 'Smith', 'jane@example.com', '0987654321', '456 Oak St'),
@@ -58,7 +58,8 @@ INSERT INTO Customers (CustomerID, FirstName, LastName, Email, Phone, Address) V
 (8, 'Grace', 'Taylor', 'grace@example.com', '8889990000', '753 Willow St'),
 (9, 'Hank', 'Anderson', 'hank@example.com', '3334445555', '159 Ash St'),
 (10, 'Ivy', 'Thomas', 'ivy@example.com', '6667778888', '753 Palm St');
-
+----------
+b. Products
 INSERT INTO Products (ProductID, ProductName, Description, Price) VALUES
 (1, 'Smartphone', 'Latest model smartphone', 699.99),
 (2, 'Laptop', 'High performance laptop', 999.99),
@@ -70,7 +71,8 @@ INSERT INTO Products (ProductID, ProductName, Description, Price) VALUES
 (8, 'Monitor', 'LED monitor 24 inch', 299.99),
 (9, 'Keyboard', 'Mechanical keyboard', 89.99),
 (10, 'Mouse', 'Wireless mouse', 49.99);
-
+----------
+c. Orders
 INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount) VALUES
 (1, 1, '2025-03-01', 699.99),
 (2, 2, '2025-03-02', 999.99),
@@ -83,6 +85,8 @@ INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount) VALUES
 (9, 9, '2025-03-09', 89.99),
 (10, 10, '2025-03-10', 49.99);
 
+----------
+d. OrderDetails
 INSERT INTO OrderDetails (OrderDetailID, OrderID, ProductID, Quantity) VALUES
 (1, 1, 1, 1),
 (2, 2, 2, 1),
@@ -95,6 +99,8 @@ INSERT INTO OrderDetails (OrderDetailID, OrderID, ProductID, Quantity) VALUES
 (9, 9, 9, 1),
 (10, 10, 10, 1);
 
+----------
+e. Inventory
 INSERT INTO Inventory (InventoryID, ProductID, QuantityInStock, LastStockUpdate) VALUES
 (1, 1, 50, '2025-03-01'),
 (2, 2, 30, '2025-03-01'),
@@ -106,43 +112,34 @@ INSERT INTO Inventory (InventoryID, ProductID, QuantityInStock, LastStockUpdate)
 (8, 8, 25, '2025-03-01'),
 (9, 9, 60, '2025-03-01'),
 (10, 10, 90, '2025-03-01');
+------------------------------------------------------------------------------------
+Task 2: SQL Queries  Retrieve the names and emails of all customers
 
-
-
-Task 2: SQL Queries - Retrieve the names and emails of all customers
-
-
+----------
 SELECT FirstName, LastName, Email FROM Customers;
-List all orders with their order dates and corresponding customer names
 
-
+----------
 SELECT o.OrderID, o.OrderDate, CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName
 FROM Orders o
 JOIN Customers c ON o.CustomerID = c.CustomerID;
-Insert a new customer record into the "Customers" table
 
+----------
 INSERT INTO Customers (CustomerID, FirstName, LastName, Email, Phone, Address) VALUES
 (11, 'Jack', 'White', 'jack@example.com', '2223334444', '321 Birch St');
-Update the prices of all electronic gadgets in the "Products" table by increasing them by 10%
+
+----------
 
 UPDATE Products SET Price = Price * 1.10;
-Delete a specific order and its associated order details
-
-
+----------
 DELETE FROM OrderDetails WHERE OrderID = @OrderID;
 DELETE FROM Orders WHERE OrderID = @OrderID;
-Insert a new order into the "Orders" table
-
-
+----------
 INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount) VALUES
 (11, 1, '2025-03-11', 299.99);
-Update the contact information of a specific customer
-
-
+----------
 UPDATE Customers SET Email = @NewEmail, Address = @NewAddress WHERE CustomerID = @CustomerID;
 Recalculate and update the total cost of each order
-
-
+-----------
 UPDATE Orders o
 SET TotalAmount = (
     SELECT SUM(od.Quantity * p.Price)
@@ -150,25 +147,18 @@ SET TotalAmount = (
     JOIN Products p ON od.ProductID = p.ProductID
     WHERE od.OrderID = o.OrderID
 );
-
+----------
 DELETE FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID = @CustomerID);
 DELETE FROM Orders WHERE CustomerID = @CustomerID;
-Insert a new electronic gadget product into the "Products" table
-
-
+----------
 INSERT INTO Products (ProductID, ProductName, Description, Price) VALUES
 (11, 'Drone', 'High-definition camera drone', 499.99);
-Update the status of a specific order
-
-
+----------
 UPDATE Orders SET Status = @NewStatus WHERE OrderID = @OrderID;
-Calculate and update the number of orders placed by each customer
-
-
+----------
 UPDATE Customers c
 SET TotalOrders = (
     SELECT COUNT(*)
     FROM Orders o
     WHERE o.CustomerID = c.CustomerID
 );
-
