@@ -98,4 +98,54 @@ DELETE FROM MY_EMPLOYEE;
 -- or alternatively
 -- TRUNCATE TABLE MY_EMPLOYEE;
 
+--Tasks--20-3-25--
+--TASK 01--
+CREATE TABLE Member (
+    member_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    city VARCHAR(50),
+    age INT CHECK(age >10)
+);
 
+INSERT INTO Member VALUES
+(1, 'Raj', 'Tamilnadu', 22),
+(2, 'Shidhi', 'Pondycherry', 28),
+(3, 'Logitha', 'Kerala', 25);
+
+UPDATE Member
+SET city = 'Hyderabad'
+WHERE member_id = 2;
+
+SELECT * FROM Members;
+
+--TASK 02--
+CREATE TABLE children (
+    id VARCHAR(50),
+    name VARCHAR(50),
+    grade VARCHAR(50),
+    marks INT
+);
+
+INSERT INTO children VALUES
+(704, 'Grace', 'Grade 8', 99),
+(502, 'Cherry', 'Grade 9', 78);
+
+SELECT * FROM children;
+
+
+UPDATE TOP (1) children
+SET id = 12 
+WHERE name = 'cherry';
+
+SELECT * FROM children;
+
+--TASK 03--
+
+CREATE TABLE workers (
+    id VARCHAR(20),
+    name VARCHAR(20) NOT NULL, 
+    salary MONEY
+);
+
+ALTER TABLE workers
+ADD CONSTRAINT chk_salary CHECK (salary > 25000);
