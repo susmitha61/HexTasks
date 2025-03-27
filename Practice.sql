@@ -1,4 +1,34 @@
-﻿--Tasks 25-03-2025 subqueries
+create database Practice
+use Practice
+-- Create the Customer table
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    City VARCHAR(50),
+    Grade INT,
+    SalesmanID INT
+);
+
+-- Create the Salesman table
+CREATE TABLE Salesman (
+    SalesmanID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    City VARCHAR(50),
+    Commission DECIMAL(5, 2)
+);
+
+-- Create the Orders table
+CREATE TABLE Orders (
+    OrderNo INT PRIMARY KEY,
+    PurchaseAmount DECIMAL(10, 2),
+    OrderDate DATE,
+    CustomerID INT,
+    SalesmanID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (SalesmanID) REFERENCES Salesman(SalesmanID)
+);
+
+--Tasks 25-03-2025 subqueries
 --1. Display Orders Issued by Salesman 'Paul Adam'
 SELECT ord_no, purch_amt, ord_date, customer_id, salesman_id
 FROM Orders
@@ -911,3 +941,165 @@ CREATE TABLE workers (
 
 ALTER TABLE workers
 ADD CONSTRAINT chk_salary CHECK (salary > 25000);
+
+CREATE TABLE TRG_DEPT (
+    ID INT PRIMARY KEY,
+    NAME VARCHAR(25)
+);
+
+CREATE TABLE TRG_EMP (
+    ID INT PRIMARY KEY,
+    LAST_NAME VARCHAR(25),
+    FIRST_NAME VARCHAR(25),
+    DEPT_ID INT
+);
+
+CREATE TABLE TRG_EMPLOYEES (
+    ID INT PRIMARY KEY,
+    FIRST_NAME VARCHAR(25),
+    LAST_NAME VARCHAR(25),
+    SALARY DECIMAL(10, 2),
+    DEPT_ID INT
+);
+
+CREATE TABLE Member (
+    member_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    city VARCHAR(50),
+    age INT CHECK(age > 10)
+);
+
+CREATE TABLE children (
+    id VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(50),
+    grade VARCHAR(50),
+    marks INT
+);
+
+CREATE TABLE workers (
+    id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    salary MONEY,
+    CONSTRAINT chk_salary CHECK (salary > 25000)
+);
+INSERT INTO TRG_DEPT (ID, NAME) VALUES
+(1, 'HR'),
+(2, 'Finance'),
+(3, 'IT'),
+(4, 'Marketing'),
+(5, 'Sales'),
+(6, 'Customer Support'),
+(7, 'Research and Development'),
+(8, 'Logistics'),
+(9, 'Legal'),
+(10, 'Administration');
+INSERT INTO TRG_EMP (ID, LAST_NAME, FIRST_NAME, DEPT_ID) VALUES
+(1, 'Doe', 'John', 1),
+(2, 'Smith', 'Jane', 2),
+(3, 'Brown', 'James', 3),
+(4, 'Taylor', 'Emma', 4),
+(5, 'Johnson', 'Michael', 5),
+(6, 'Williams', 'Sarah', 6),
+(7, 'Jones', 'David', 7),
+(8, 'Garcia', 'Linda', 8),
+(9, 'Martinez', 'Robert', 9),
+(10, 'Hernandez', 'Jessica', 10);
+INSERT INTO TRG_EMPLOYEES (ID, FIRST_NAME, LAST_NAME, SALARY, DEPT_ID) VALUES
+(1, 'Alice', 'Johnson', 50000, 1),
+(2, 'Bob', 'Williams', 60000, 2),
+(3, 'Charlie', 'Jones', 55000, 3),
+(4, 'Daisy', 'Garcia', 70000, 4),
+(5, 'Eve', 'Martinez', 65000, 5),
+(6, 'Frank', 'Davis', 72000, 6),
+(7, 'Grace', 'Lopez', 58000, 7),
+(8, 'Henry', 'Gonzalez', 62000, 8),
+(9, 'Ivy', 'Wilson', 59000, 9),
+(10, 'Jack', 'Anderson', 75000, 10);
+INSERT INTO Member (member_id, name, city, age) VALUES
+(1, 'Raj', 'Tamilnadu', 22),
+(2, 'Shidhi', 'Pondycherry', 28),
+(3, 'Logitha', 'Kerala', 25),
+(4, 'Anil', 'Delhi', 30),
+(5, 'Priya', 'Mumbai', 26),
+(6, 'Ravi', 'Bangalore', 35),
+(7, 'Neha', 'Chennai', 24),
+(8, 'Kiran', 'Hyderabad', 29),
+(9, 'Sita', 'Kolkata', 31),
+(10, 'Amit', 'Ahmedabad', 27);
+INSERT INTO children (id, name, grade, marks) VALUES
+('704', 'Grace', 'Grade 8', 99),
+('502', 'Cherry', 'Grade 9', 78),
+('101', 'Tom', 'Grade 7', 85),
+('102', 'Jerry', 'Grade 6', 90),
+('103', 'Mickey', 'Grade 8', 88),
+('104', 'Donald', 'Grade 9', 92),
+('105', 'Pluto', 'Grade 7', 80),
+('106', 'Goofy', 'Grade 6', 75),
+('107', 'Daisy', 'Grade 8', 95),
+('108', 'Minnie', 'Grade 9', 89);
+INSERT INTO workers (id, name, salary) VALUES
+('W001', 'Alice', 30000),
+('W002', 'Bob', 40000),
+('W003', 'Charlie', 50000),
+('W004', 'Diana', 60000),
+('W005', 'Edward', 70000),
+('W006', 'Fiona', 80000),
+('W007', 'George', 90000),
+('W008', 'Hannah', 100000),
+('W009', 'Ian', 110000),
+('W010', 'Julia', 120000);
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    City VARCHAR(50),
+    Grade INT,
+    SalesmanID INT
+);
+CREATE TABLE Salesman (
+    SalesmanID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    City VARCHAR(50),
+    Commission DECIMAL(5, 2)
+);
+CREATE TABLE Orders (
+    OrderNo INT PRIMARY KEY,
+    PurchaseAmount DECIMAL(10, 2),
+    OrderDate DATE,
+    CustomerID INT,
+    SalesmanID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (SalesmanID) REFERENCES Salesman(SalesmanID)
+);
+INSERT INTO Customer (CustomerID, Name, City, Grade, SalesmanID) VALUES
+(3001, 'Brad Guzan', 'London', 100, 5005),
+(3002, 'Nick Rimando', 'New York', 200, 5001),
+(3003, 'Jozy Altidore', 'Moscow', 200, 5007),
+(3004, 'Fabian Johnson', 'Paris', 300, 5006),
+(3005, 'Graham Zusi', 'California', 200, 5002),
+(3006, 'Clint Dempsey', 'Chicago', 250, 5003),
+(3007, 'Brad Davis', 'New York', 200, 5001),
+(3008, 'Julian Green', 'London', 300, 5002),
+(3009, 'Geoff Cameron', 'Berlin', 100, 5003),
+(3010, 'Tim Howard', 'New York', 150, 5004);
+INSERT INTO Salesman (SalesmanID, Name, City, Commission) VALUES
+(5001, 'James Hoog', 'New York', 0.15),
+(5002, 'Nail Knite', 'Paris', 0.13),
+(5003, 'Lauson Hen', 'San Jose', 0.12),
+(5004, 'Pit Alex', 'London', 0.11),
+(5005, 'Paul Adam', 'Rome', 0.13),
+(5006, 'Mc Lyon', 'Paris', 0.14),
+(5007, 'Brad Davis', 'New York', 0.15),
+(5008, 'Clint Dempsey', 'Chicago', 0.12),
+(5009, 'Graham Zusi', 'California', 0.13),
+(5010, 'Tim Howard', 'New York', 0.14);
+INSERT INTO Orders (OrderNo, PurchaseAmount, OrderDate, CustomerID, SalesmanID) VALUES
+(70001, 150.50, '2012-10-05', 3002, 5001),
+(70002, 65.26, '2012-10-05', 3001, 5001),
+(70003, 2480.40, '2012-10-10', 3009, 5003),
+(70004, 110.50, '2012-08-17', 3009, 5003),
+(70005, 2400.60, '2012-07-27', 3007, 5001),
+(70006, 270.65, '2012-09-10', 3001, 5005),
+(70007, 948.50, '2012-09-10', 3005, 5002),
+(70008, 5760.00, '2012-09-10', 3002, 5001),
+(70009, 1983.43, '2012-10-10', 3004, 5006),
+(70010, 1500.00, '2012-10-12', 3006, 5003);
