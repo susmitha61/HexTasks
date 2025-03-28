@@ -1,19 +1,20 @@
 create database ecommerce
 use ecommerce
+create schema Ecommerce;
 -- Create Customers Table
 CREATE TABLE customers (
     customer_id INT PRIMARY KEY,
-    name NVARCHAR(50),
-    email NVARCHAR(100),
-    password NVARCHAR(50)
+    name VARCHAR(50),
+    email VARCHAR(100),
+    password VARCHAR(50)
 );
 
 -- Create Products Table
 CREATE TABLE products (
     product_id INT PRIMARY KEY,
-    name NVARCHAR(50),
+    name VARCHAR(50),
     price DECIMAL(10, 2),
-    description NVARCHAR(255),
+    description VARCHAR(255),
     stockQuantity INT
 );
 
@@ -31,7 +32,7 @@ CREATE TABLE orders (
     customer_id INT FOREIGN KEY REFERENCES customers(customer_id),
     order_date DATE,
     total_price DECIMAL(10, 2),
-    shipping_address NVARCHAR(255)
+    shipping_address VARCHAR(255)
 );
 
 -- Create Order Items Table
@@ -112,7 +113,7 @@ WHERE stockQuantity > 5;
 SELECT *
 FROM orders
 WHERE total_price BETWEEN 500 AND 1000;
---6.Find Products which name end with letter ‘r’.
+--6.Find Products which name end with letter â€˜râ€™.
 SELECT *
 FROM products
 WHERE name LIKE '%r';
@@ -121,7 +122,7 @@ SELECT *
 FROM cart
 WHERE customer_id = 5;
 --8.Find Customers Who Placed Orders in 2023.
-SELECT DISTINCT c.*
+SELECT DISTINCT c
 FROM customers c
 JOIN orders o ON c.customer_id = o.customer_id
 WHERE YEAR(o.order_date) = 2023;
@@ -150,7 +151,7 @@ FROM customers c
 JOIN orders o ON c.customer_id = o.customer_id
 GROUP BY c.customer_id, c.name;
 --14.Get Customers Who Placed Orders Totaling Over $1000.
-SELECT DISTINCT c.*
+SELECT DISTINCT c
 FROM customers c
 JOIN orders o ON c.customer_id = o.customer_id
 GROUP BY c.customer_id, c.name
