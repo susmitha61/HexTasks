@@ -159,39 +159,4 @@ class JobListing:
         return f"JobListing(job_id={self.job_id}, title='{self.job_title}')"
 
 
-class JobListingManager:
-    def __init__(self):
-        self.job_listings = []
 
-    def add_job(self, job):
-        self.job_listings.append(job)
-
-    def update_job(self, job_id, updated_job):
-        for i, job in enumerate(self.job_listings):
-            if job.job_id == job_id:
-                self.job_listings[i] = updated_job
-                return
-        raise ValueError("Job not found.")
-
-    def remove_job(self, job_id):
-        for i, job in enumerate(self.job_listings):
-            if job.job_id == job_id:
-                del self.job_listings[i]
-                return
-        raise ValueError("Job not found.")
-
-    def filter_jobs_by_company(self, company_id):
-        return [job for job in self.job_listings if job.company_id == company_id]
-
-    def sort_jobs_by_post_date(self, ascending=True):
-        self.job_listings.sort(key=lambda x: x.posted_date, reverse=not ascending)
-
-    @staticmethod
-    def process_job(job, db_connector):
-        query = "SELECT * FROM dbo.JobListings WHERE JobID = ?"
-        result = db_connector.fetch_query(query, (job.job_id,))
-        if result:
-            existing_job = result[0]
-            print(f"Processing job: {existing_job}")
-        else:
-            print("Job not found.")
