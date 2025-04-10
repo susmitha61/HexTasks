@@ -14,44 +14,46 @@ def main():
         connection = db.connect()  # Ensure the connection is established
         print("Database connection established successfully!")
 
-        # Initialize JobListingManager
-        job_manager = JobListingManager()
+         print("Adding a new job listing...")
+        job_listing = JobListing(
+            job_id=None,
+            company_id=1,
+            job_title="Software Engineer",
+            job_description="Develop and maintain software applications.",
+            job_location="New York",
+             salary=95000.0,
+            job_type="Full-time"
+           )
+        job_listing.create_job_listing(connection, job_listing.company_id, job_listing.job_title,
+                                   job_listing.job_description, job_listing.job_location,
+                                   job_listing.salary, job_listing.job_type)
 
-        # Create job listings (simulating in-memory for this example)
-        job1 = JobListing(job_id=12, company_id=1, job_title="Software Engineer",
-                          job_description="Develop software solutions", job_location="New York", salary=120000,
-                          job_type="Full-time")
-        job2 = JobListing(job_id=22, company_id=1, job_title="Data Analyst", job_description="Analyze data and reports",
-                          job_location="San Francisco", salary=110000, job_type="Full-time")
+          # Read all job listings
+          print("\nReading all job listings...")
+          job_listings = JobListing.read_all_job_listings(connection)
+         for job in job_listings:
+              print(job.get_job_details())
 
-        # Add job listings to the manager
-        job_manager.add_job(job1)
-        job_manager.add_job(job2)
+          # Read a specific job listing by ID
+          job_id_to_read = 1  # Assuming you want to read a job with ID 1
+          print(f"\nReading job listing with ID {job_id_to_read}...")
+         job_listing = JobListing.read_job_listing_by_id(connection, job_id_to_read)
+         if job_listing:
+             print(job_listing.get_job_details())
+          else:
+               print(f"Job with ID {job_id_to_read} not found.")
 
-        # Display all job listings
-        print("All Job Listings:")
-        for job in job_manager.job_listings:
-            print(job.get_job_details())
+         # Update an existing job listing
+         job_id_to_update = 1  # Assuming you want to update job with ID 1
+         print(f"\nUpdating job listing with ID {job_id_to_update}...")
+         JobListing.update_job_listing(connection, job_id_to_update, job_title="Senior Software Engineer")
 
-        # Place job listing into the database
-        job1.place_job(connection)
+         # Delete a job listing
+         job_id_to_delete = 1  # Assuming you want to delete job with ID 1
+          print(f"\nDeleting job listing with ID {job_id_to_delete}...")
+          JobListing.delete_job_listing(connection, job_id_to_delete)
 
-        # Update job listing
-        job2.job_title = "Senior Data Analyst"  # Update job title
-        job2.update_job(connection, job2.job_id)
 
-        # Display updated job listing
-        print("\nUpdated Job Listings:")
-        for job in job_manager.job_listings:
-            print(job.get_job_details())
-
-        # Remove a job
-        job_manager.remove_job(22)
-
-        # Display remaining job listings
-        print("\nRemaining Job Listings after Removal:")
-        for job in job_manager.job_listings:
-            print(job.get_job_details())
 
         # Create a new company
         company_name = "TechCorp"
