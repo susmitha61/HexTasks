@@ -13,6 +13,7 @@ def main():
         db = DBPropertyUtil('HP-15EF2XXX', 'CareerHub')  # Ensure DBPropertyUtil is properly configured
         connection = db.connect()  # Ensure the connection is established
         print("Database connection established successfully!")
+
         # Initialize JobListingManager
         job_manager = JobListingManager()
 
@@ -33,11 +34,11 @@ def main():
             print(job.get_job_details())
 
         # Place job listing into the database
-        job1.place_job(db_connector)
+        job1.place_job(connection)
 
         # Update job listing
         job2.job_title = "Senior Data Analyst"  # Update job title
-        job2.update_job(db_connector, job2.job_id)
+        job2.update_job(connection, job2.job_id)
 
         # Display updated job listing
         print("\nUpdated Job Listings:")
@@ -52,18 +53,18 @@ def main():
         for job in job_manager.job_listings:
             print(job.get_job_details())
 
-        #Create a new company
+        # Create a new company
         company_name = "TechCorp"
         location = "San Francisco"
         Company.create_company(connection, company_name, location)
 
-        #Read all companies
+        # Read all companies
         print("\nAll Companies:")
         companies = Company.read_all_companies(connection)
         for company in companies:
             print(company)
 
-        #Read a company by ID
+        # Read a company by ID
         company_id = 1  # Replace with an actual CompanyID from your database
         company = Company.read_company_by_id(connection, company_id)
         if company:
@@ -83,13 +84,13 @@ def main():
         print("\nCreating a new applicant...")
         Applicant.create_applicant(connection, "John", "Doe", "john.doe@example.com", "1234567890", "path/to/resume.pdf")
 
-        #Read and display all applicants
+        # Read and display all applicants
         print("\nFetching all applicants...")
         applicants = Applicant.read_all_applicants(connection)
         for applicant in applicants:
             print(applicant)
 
-        #Read a specific applicant by ID
+        # Read a specific applicant by ID
         applicant_id = 1  # Replace with an actual ApplicantID from your database
         print(f"\nFetching applicant with ID {applicant_id}...")
         applicant = Applicant.read_applicant_by_id(connection, applicant_id)
@@ -98,11 +99,11 @@ def main():
         else:
             print(f"Applicant with ID {applicant_id} not found.")
 
-        #Update an applicant's details, including resume
+        # Update an applicant's details, including resume
         print(f"\nUpdating applicant with ID {applicant_id}...")
         Applicant.update_applicant(connection, applicant_id, first_name="Jane", last_name="Smith", resume="path/to/updated_resume.pdf")
 
-        #Delete an applicant
+        # Delete an applicant
         print(f"\nDeleting applicant with ID {applicant_id}...")
         Applicant.delete_applicant(connection, applicant_id)
 
